@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALFTONE — Lux Savage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ── Canvas area ──────────────────────────────────────────────────── -->
+    <div id="canvas-area">
+        <div id="canvas-wrap">
+            <canvas id="c"></canvas>
+            <div id="drop-overlay">
+                <input type="file" id="file-input" accept="image/*,video/*" style="display:none">
+                <div class="drop-icon">⬡</div>
+                <p>Drop an image or video</p>
+                <small>jpg · png · mp4 · webm · mov</small>
+            </div>
+        </div>
+        <div id="canvas-meta">
+            <span id="meta-res">— × —</span>
+            <span id="meta-fps">— fps</span>
+        </div>
+    </div>
+
+    <!-- ── Control panel ────────────────────────────────────────────────── -->
+    <div id="panel">
+
+        <div class="panel-header">
+            <h1>Halftone</h1>
+            <small>Lux Savage</small>
+        </div>
+
+        <!-- Source -->
+        <div class="section">
+            <div class="section-label">Source</div>
+            <button id="btn-change-source" class="load-btn">↑ Load file</button>
+            <span id="source-name">no file loaded</span>
+        </div>
+
+        <!-- Halftone -->
+        <div class="section">
+            <div class="section-label">
+                Halftone
+                <button id="btn-reload-base" class="reload-btn" title="Reload base.frag">⟳</button>
+            </div>
+            <div id="err-base" class="error-box hidden"></div>
+            <div class="slider-row">
+                <label>Pixel Size</label>
+                <input type="range" id="sl-pixel" min="4" max="20" step="1" value="10">
+                <span class="slider-val" id="val-pixel">10</span>
+            </div>
+            <div class="slider-row">
+                <label>Shadows</label>
+                <input type="range" id="sl-threshold" min="0" max="1" step="0.01" value="0.2">
+                <span class="slider-val" id="val-threshold">0.20</span>
+            </div>
+            <div class="slider-row">
+                <label>Line thickness</label>
+                <input type="range" id="sl-line" min="0" max="5" step="0.1" value="0">
+                <span class="slider-val" id="val-line">0.0</span>
+            </div>
+            <div class="slider-row">
+                <label>Radius</label>
+                <input type="range" id="sl-radius" min="0" max="1" step="0.01" value="0.7">
+                <span class="slider-val" id="val-radius">0.70</span>
+            </div>
+            <div class="slider-row">
+                <label>Gooeyness</label>
+                <input type="range" id="sl-gooeyness" min="0.1" max="1.0" step="0.01" value="0.20">
+                <span class="slider-val" id="val-gooeyness">0.20</span>
+            </div>
+        </div>
+
+        <!-- CRT Effect (hidden — kept in DOM for future post-process) -->
+        <div class="layer-section disabled hidden" id="section-effect">
+            <div class="layer-header">
+                <label class="toggle">
+                    <input type="checkbox" id="tog-effect">
+                    <div class="toggle-track"></div>
+                    <div class="toggle-thumb"></div>
+                </label>
+                <div>
+                    <div class="layer-name">
+                        CRT Effect
+                        <button id="btn-reload-effect" class="reload-btn" title="Reload effect.frag">⟳</button>
+                    </div>
+                    <div class="layer-desc">chroma · scanlines · grain · vignette</div>
+                </div>
+            </div>
+            <div id="err-effect" class="error-box hidden"></div>
+            <div class="slider-row">
+                <label>Opacity</label>
+                <input type="range" id="sl-effect-op" min="0" max="1" step="0.01" value="0.7">
+                <span class="slider-val" id="val-effect-op">70%</span>
+            </div>
+            <div class="slider-row">
+                <label>Intensity</label>
+                <input type="range" id="sl-effect-str" min="0" max="1" step="0.01" value="0.6">
+                <span class="slider-val" id="val-effect-str">0.60</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div id="bottom-controls">
+            <div id="rec-indicator" class="hidden">
+                <span class="rec-dot">●</span>
+                <span>Recording…</span>
+            </div>
+            <button class="action-btn" id="btn-pause-play">
+                <span class="btn-label">Pause</span>
+                <span class="btn-icon">⏸</span>
+            </button>
+            <button class="action-btn" id="btn-export-png">
+                <span class="btn-label">Export image</span>
+                <span class="btn-icon">↓</span>
+            </button>
+            <button class="action-btn" id="btn-record">
+                <span class="btn-label">Record video</span>
+                <span class="btn-icon">⏺</span>
+            </button>
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
