@@ -116,14 +116,16 @@ void main(){
     
     vec3 color = vec3(1.0);
 
+    // uMode: 0 = Color CMYK halftone, 1 = Black-only halftone
+    if (uMode == 0) {
+        // Remove the complementary colors for each CYM channel
+        color -= vec3(1.0, 0.0, 0.0) * toner(st, AC, 1);
+        color -= vec3(0.0, 0.0, 1.0) * toner(st, AY, 2);
+        color -= vec3(0.0, 1.0, 0.0) * toner(st, AM, 3);
+    }
 
-    // Remove the complementary colors for each CYM channel
-    color -= vec3(1.0, 0.0, 0.0) * toner(st,AC,1);
-    color -= vec3(0.0, 0.0, 1.0) * toner(st,AY,2);
-    color -= vec3(0.0, 1.0, 0.0) * toner(st,AM,3);
-
-    // Add black by setting pixels to 0
-    color *= 1. - toner(st,AK,0);
+    // Black channel applies in both modes
+    color *= 1. - toner(st, AK, 0);
 
 
     // Raster: pixel-accurate solid-black fill for pixels below threshold
